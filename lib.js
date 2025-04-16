@@ -1,6 +1,7 @@
 const { get } = require("axios");
-
-const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxGZXtTpXDoo8dkpudupLoJb4gfXOaBaT9D_4AbyTNLx-ukrKD8OkRnZrg5Xj0WVa8hww/exec';
+const dotenv = require("dotenv");
+dotenv.config();
+const { WEB_APP_URL } = process.env;
 
 async function getSheetData() {
   try {
@@ -14,7 +15,9 @@ async function getSheetData() {
 
 async function getEmailTemplate(subject) {
   try {
-    const response = await get(`${WEB_APP_URL}?action=template&subject=${encodeURIComponent(subject)}`);
+    const response = await get(
+      `${WEB_APP_URL}?action=template&subject=${encodeURIComponent(subject)}`
+    );
     return response.data;
   } catch (error) {
     console.error("Error fetching email template:", error);
