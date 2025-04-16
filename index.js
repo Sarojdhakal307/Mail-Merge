@@ -29,6 +29,9 @@ app.get("/", (req, res) => {
       </head>
       <body style="font-family: Arial, sans-serif; margin: 2rem;">
         <h2>ASCOL IT CLUB MAIL MERGE</h2>
+        <p>Welcome to the ASCOL IT Club Mail Merge application. Please fill in the details below to send personalized emails.</p>
+        
+
         <form action="/sendmail" method="POST">
           <label for="Subject">Subject:</label><br>
           <input type="text" id="Subject" name="Subject" required><br><br>
@@ -38,6 +41,10 @@ app.get("/", (req, res) => {
           
           <button type="submit">Send Mail</button>
         </form>
+        <br>
+        <p >Note : Please Enter the Same Subject which is in your mail draft </p>
+        <p> Please take password from the club members </p>
+        <p> please Update this google sheets To send the mail to the respective person : <a href=${process.env.SHEET_URL}> click here</a></p>
       </body>
     </html>
   `);
