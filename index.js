@@ -6,7 +6,7 @@ dotenv.config();
 
 const app = express();
 const port = 3000;
-
+app.use(express.urlencoded({ extended: true })); // To parse form data
 // Parse JSON bodies (for POST requests)
 app.use(express.json());
 
@@ -20,14 +20,33 @@ const transporter = nodemailer.createTransport({
 });
 
 app.get("/", (req, res) => {
-  console.log("Request received at /");
-  res.send("ASCOL IT CLUB MAIL MERGE!");
+  // console.log("Request received at /");
+  res.send(`
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>Mail Merge Form</title>
+      </head>
+      <body style="font-family: Arial, sans-serif; margin: 2rem;">
+        <h2>ASCOL IT CLUB MAIL MERGE</h2>
+        <form action="/sendmail" method="POST">
+          <label for="Subject">Subject:</label><br>
+          <input type="text" id="Subject" name="Subject" required><br><br>
+          
+          <label for="Password">Password:</label><br>
+          <input type="password" id="Password" name="Password" required><br><br>
+          
+          <button type="submit">Send Mail</button>
+        </form>
+      </body>
+    </html>
+  `);
 });
 
 app.post("/sendmail", async (req, res) => {
   const { Subject, Password } = req.body;
-  console.log("Request received at /sendmail", req.body);
-  console.log("Subject:", process.env.PASSWORD);
+  // console.log("Request received at /sendmail", req.body);
+  // console.log("Password:", process.env.PASSWORD);
   if (!Subject || !Password) {
     return res.status(400).send("Subject and Password are required");
   }
@@ -38,8 +57,8 @@ app.post("/sendmail", async (req, res) => {
   try {
     const sheetData = await getSheetData();
     const template = await getEmailTemplate(Subject);
-    console.log("Sheet Data:", sheetData);
-    console.log("Email Template:", template);
+    // console.log("Sheet Data:", sheetData);
+    // console.log("Email Template:", template);
 
     if (!template || template.error) {
       return res.status(404).send("Email draft template not found");
@@ -62,7 +81,7 @@ app.post("/sendmail", async (req, res) => {
       };
 
       await transporter.sendMail(mailOptions);
-      console.log(`Email sent to ${Email}`);
+      // console.log(`Email sent to ${Email}`);
       sentEmails.push(Email);
     }
 
@@ -77,5 +96,5 @@ app.post("/sendmail", async (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`App listening ${port}`);
+  console.log(`App listening `);
 });
