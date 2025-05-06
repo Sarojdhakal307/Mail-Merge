@@ -21,7 +21,8 @@ const transporter = nodemailer.createTransport({
 
 app.get("/", (req, res) => {
   // console.log("Request received at /");
-  res.send(`<!DOCTYPE html>
+  res.send(`
+    <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -52,7 +53,7 @@ app.get("/", (req, res) => {
         Please fill in the details below to send personalized emails.
       </p>
 
-      <form action="/sendmail" method="POST" class="space-y-6">
+      <form id="mailForm" action="/sendmail" method="POST" class="space-y-6">
         <div>
           <label for="Subject" class="block text-sm font-medium text-gray-200">Subject:</label>
           <input type="text" id="Subject" name="Subject" required
@@ -65,11 +66,18 @@ app.get("/", (req, res) => {
                  class="mt-1 w-full px-4 py-2 border border-gray-700 bg-gray-900 text-white rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
         </div>
 
-        <div class="flex justify-center">
-          <button type="submit"
+        <div class="flex flex-col items-center space-y-4">
+          <button id="sendButton" type="submit"
                   class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-indigo-600 hover:to-blue-700 text-white font-semibold py-2 px-6 rounded-full shadow-lg transform hover:scale-105 transition duration-300">
             🚀 Send Mail
           </button>
+          <div id="statusMessage" class="text-sm text-blue-300 hidden flex items-center space-x-2">
+            <svg class="animate-spin h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+            </svg>
+            <span>Sending mail, please wait...</span>
+          </div>
         </div>
       </form>
 
@@ -82,6 +90,19 @@ app.get("/", (req, res) => {
         </p>
       </div>
     </div>
+
+    <script>
+      const form = document.getElementById('mailForm');
+      const button = document.getElementById('sendButton');
+      const status = document.getElementById('statusMessage');
+
+      form.addEventListener('submit', function (e) {
+        // Show loading and disable button
+        button.disabled = true;
+        button.classList.add('opacity-60', 'cursor-not-allowed');
+        status.classList.remove('hidden');
+      });
+    </script>
   </body>
 </html>
 
