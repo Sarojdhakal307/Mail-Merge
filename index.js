@@ -21,32 +21,70 @@ const transporter = nodemailer.createTransport({
 
 app.get("/", (req, res) => {
   // console.log("Request received at /");
-  res.send(`
-    <!DOCTYPE html>
-    <html>
-      <head>
-        <title>Mail Merge Form</title>
-      </head>
-      <body style="font-family: Arial, sans-serif; margin: 2rem;">
-        <h2>ASCOL IT CLUB MAIL MERGE</h2>
-        <p>Welcome to the ASCOL IT Club Mail Merge application. Please fill in the details below to send personalized emails.</p>
-        
+  res.send(`<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mail Merge Form</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @keyframes fadeSlideIn {
+        0% {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .animate-fadeSlideIn {
+        animation: fadeSlideIn 0.8s ease-out forwards;
+      }
+    </style>
+  </head>
+  <body class="bg-gradient-to-b from-gray-900 via-gray-950 to-black text-white min-h-screen flex items-center justify-center p-4">
+    <div class="bg-gray-800/80 backdrop-blur-md shadow-2xl rounded-2xl p-8 max-w-xl w-full animate-fadeSlideIn">
+      <h2 class="text-3xl font-extrabold text-center text-blue-400 mb-4">ASCOL IT CLUB MAIL MERGE</h2>
+      <p class="text-gray-300 text-center mb-6">
+        Welcome to the ASCOL IT Club Mail Merge application.<br>
+        Please fill in the details below to send personalized emails.
+      </p>
 
-        <form action="/sendmail" method="POST">
-          <label for="Subject">Subject:</label><br>
-          <input type="text" id="Subject" name="Subject" required><br><br>
-          
-          <label for="Password">Password:</label><br>
-          <input type="password" id="Password" name="Password" required><br><br>
-          
-          <button type="submit">Send Mail</button>
-        </form>
-        <br>
-        <p >Note : Please Enter the Same Subject which is in your mail draft </p>
-        <p> Please take password from the club members </p>
-        <p> please Update this google sheets To send the mail to the respective person : <a href=${process.env.SHEET_URL}> click here</a></p>
-      </body>
-    </html>
+      <form action="/sendmail" method="POST" class="space-y-6">
+        <div>
+          <label for="Subject" class="block text-sm font-medium text-gray-200">Subject:</label>
+          <input type="text" id="Subject" name="Subject" required
+                 class="mt-1 w-full px-4 py-2 border border-gray-700 bg-gray-900 text-white rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+
+        <div>
+          <label for="Password" class="block text-sm font-medium text-gray-200">Password:</label>
+          <input type="password" id="Password" name="Password" required
+                 class="mt-1 w-full px-4 py-2 border border-gray-700 bg-gray-900 text-white rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+
+        <div class="flex justify-center">
+          <button type="submit"
+                  class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-indigo-600 hover:to-blue-700 text-white font-semibold py-2 px-6 rounded-full shadow-lg transform hover:scale-105 transition duration-300">
+            🚀 Send Mail
+          </button>
+        </div>
+      </form>
+
+      <div class="mt-8 text-sm text-gray-400 space-y-2 text-center">
+        <p><strong>Note:</strong> Please enter the same subject as in your mail draft.</p>
+        <p>Please take the password from the club members.</p>
+        <p>
+          Update the Google Sheet to send mail to the respective person: 
+          <a href="${process.env.SHEET_URL}" class="text-blue-400 underline hover:text-blue-300 transition">Click here</a>
+        </p>
+      </div>
+    </div>
+  </body>
+</html>
+
   `);
 });
 
